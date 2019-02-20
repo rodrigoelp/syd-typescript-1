@@ -48,3 +48,34 @@ The best way to start is to look for an example, translate it to TypeScript and 
 ### Do I need to declare everything written in the JS file?
 
 No, you just need to declare whatever is public and accessible to others. If there are private functions/variables or elements that have been repurposed (such as global constants that have been encapsulated in `enum` types) then don't declare it.
+
+### Before you showed a declaration file (added below) with variables and functions... When you declared the module the declaration wasn't added, why?
+
+```ts
+// section of code, referenced in slide 19
+declare var foo: number;
+declare function bar(): string;
+```
+
+Well, when you declare a module, whatever exported is part of the declaration... basically, anything you are expressing in the module will be declared as soon as you exported; TypeScript is trying to help us removing that redundancy. Now... in the case where you declare just a variable or a function, you need to be aware that it belongs to a module but you decided not to access it. For instance, when using TypeScript in node the object `console` is not part of any definition. In that case you can just declare that object as:
+
+```ts
+declare var console: any; // effectively, a hack to tell TypeScript 'I know what I am doing calling `console`
+```
+
+Or, you could declare it as:
+
+```ts
+declare var console: { 
+    log: (data: any) => void;
+    debug: (data: any) => void;
+    clear: () => void;
+    // whatever other method you use from console.
+}
+```
+
+`console` will be available as a global variable, does not belong to a given module.
+
+### Where can I find the slides (images)?
+
+Uploaded to this repo [here](./presso/presso.md)
